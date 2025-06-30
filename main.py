@@ -27,3 +27,7 @@ print(df.shape)
 #checking the missing value
 
 print(df.isnull().sum())
+
+df = df.drop().reset_index(drop = true)
+
+df['combined'] = df['genres']+'' + df['keywords']+''+df['overview']
