@@ -12,7 +12,7 @@ from nltk.tokenize import word_tokenize
 # loading the dataset in dataframe
 df = pd.read_csv('movies.csv')
 
-#leading information 
+#loading information 
 
 print(df.info())
 
