@@ -28,6 +28,22 @@ print(df.shape)
 
 print(df.isnull().sum())
 
-df = df.drop().reset_index(drop = true)
+#droping all the null values not the best method but work efficient 
+df = df.dropna().reset_index(drop = True)
 
 df['combined'] = df['genres']+'' + df['keywords']+''+df['overview']
+
+data = df[['title', 'combined']]
+
+#Wordcloud for movie content
+combined_text = "".join(df['combined'])
+wordCloud = WordCloud(width=800, height=400, background_color="white").generate(combined_text)
+
+
+#wordcloud to visualize the most common words in the movie content
+
+plt.figure(figsize=(10,5))
+plt.imshow(wordCloud, interpolation='bilinear')
+plt.axis('off')
+plt.title("most common words in movie content")
+plt.show()
