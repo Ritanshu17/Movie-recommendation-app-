@@ -33,7 +33,13 @@ df = df.dropna().reset_index(drop = True)
 
 df['combined'] = df['genres']+'' + df['keywords']+''+df['overview']
 
-data = df[['title', 'combined']]
+
+#used .copy for resolving issue of copywriting 
+'''This data is not guaranteed to be a standalone copy — 
+it's a view of df, so when you try to add a new column ('cleaned_text')
+ to it, Pandas warns that this might not behave as expected.
+'''
+data = df[['title', 'combined']].copy()
 
 #Wordcloud for movie content
 combined_text = "".join(df['combined'])
@@ -47,3 +53,30 @@ plt.imshow(wordCloud, interpolation='bilinear')
 plt.axis('off')
 plt.title("most common words in movie content")
 plt.show()
+
+#required NLTK data 
+nltk.download('punkt')
+nltk.download('punkt_tab')
+nltk.download('stopwords')
+
+stop_words = set(stopwords.words('english'))
+
+#defining function for preprocessing data
+
+def preprocess_data(text):
+    #remove special character and numbers
+    text = re.sub(r"[^a-zA-Z\s]","",text)
+
+    #convert to lowercase
+    text = text.lower()
+
+    #Tokenize and remove stopwords
+    tokens = word_tokenize(text)
+    tokens = [word for word in tokens if word not in stop_words]
+    return " ".join(tokens)
+
+#apply preprocessing to the movie content
+
+data['cleaned_text']= df['combined'].apply(preprocess_data)
+
+print(data.head())
