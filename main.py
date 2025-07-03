@@ -55,9 +55,9 @@ plt.title("most common words in movie content")
 plt.show()
 
 #required NLTK data 
-nltk.download('punkt')
-nltk.download('punkt_tab')
-nltk.download('stopwords')
+#nltk.download('punkt')
+#nltk.download('punkt_tab')
+#nltk.download('stopwords')
 
 stop_words = set(stopwords.words('english'))
 
@@ -88,6 +88,25 @@ tfidf_matrix = tfidf_vectorizer.fit_transform(data['cleaned_text'])
 
 #compute cosine similarity 
 cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
+print(cosine_sim)
 
 # recommendation function 
- 
+def recommendation_function(movie_name, cosine_sim=cosine_sim, df = data, top_n=5):
+    #find the index of the movie
+    idx = df[df['title'].str.lower() == movie_name.lower()].index
+    if len(idx) == 0:
+        return "movie not found in the dataset"
+    idx = idx[0]
+
+    #get similarity scores
+    sim_scores = list(enumerate(cosine_sim[idx]))
+    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse =True)
+    sim_scores = sim_scores[1:top_n+1]
+
+    #get movie indices
+    movie_indices = [i[0] for i in sim_scores]
+
+    #return top n similar movies
+    return df[['title']].iloc[movie_indices]
+
+print(data['title'])
