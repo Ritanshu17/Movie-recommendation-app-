@@ -12,7 +12,7 @@ from nltk.tokenize import word_tokenize
 # loading the dataset in dataframe
 df = pd.read_csv('movies.csv')
 
-#loading information 
+#loading information
 
 print(df.info())
 
@@ -34,10 +34,10 @@ df = df.dropna().reset_index(drop = True)
 df['combined'] = df['genres']+'' + df['keywords']+''+df['overview']
 
 
-#used .copy for resolving issue of copywriting 
-'''This data is not guaranteed to be a standalone copy — 
+#used .copy for resolving issue of copywriting
+'''This data is not guaranteed to be a standalone copy —
 it's a view of df, so when you try to add a new column ('cleaned_text')
- to it, Pandas warns that this might not behave as expected.
+to it, Pandas warns that this might not behave as expected.
 '''
 data = df[['title', 'combined']].copy()
 
@@ -80,3 +80,14 @@ def preprocess_data(text):
 data['cleaned_text']= df['combined'].apply(preprocess_data)
 
 print(data.head())
+
+#vectorize with tf-idf
+
+tfidf_vectorizer = TfidfVectorizer(max_features=5000)
+tfidf_matrix = tfidf_vectorizer.fit_transform(data['cleaned_text'])
+
+#compute cosine similarity 
+cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
+
+# recommendation function 
+ 
