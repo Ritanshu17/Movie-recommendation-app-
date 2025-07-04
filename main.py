@@ -54,10 +54,6 @@ plt.axis('off')
 plt.title("most common words in movie content")
 plt.show()
 
-#required NLTK data 
-#nltk.download('punkt')
-#nltk.download('punkt_tab')
-#nltk.download('stopwords')
 
 stop_words = set(stopwords.words('english'))
 
@@ -110,3 +106,23 @@ def recommendation_function(movie_name, cosine_sim=cosine_sim, df = data, top_n=
     return df[['title']].iloc[movie_indices]
 
 print(data['title'])
+
+#roe_index = df[df["title"]] == Avnegers : Age of ultron"].index
+row_index = df[df["title"] == "Batman v Superman : Dawn of justice"].index
+movie_name = data['title'][9]
+print(movie_name)
+
+#example for recommendation system
+
+print(f"Recommendation for the movie{movie_name}")
+recommendations = recommendation_function(movie_name)
+print(recommendations)
+
+
+
+
+
+
+
+
+
